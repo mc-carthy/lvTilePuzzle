@@ -15,6 +15,38 @@ function love.draw()
     drawTiles()
 end
 
+function love.keypressed(key)
+    local emptyX
+    local emptyY
+
+    for x = 1, gridSizeX do
+        for y = 1, gridSizeY do
+            if grid[x][y] == gridSizeX * gridSizeY then
+                emptyX = x
+                emptyY = y
+            end
+        end
+    end
+
+    local newEmptyX = emptyX
+    local newEmptyY = emptyY
+
+    if key == 'right' then
+        newEmptyX = emptyX + 1
+    elseif key == 'up' then
+        newEmptyY = emptyY - 1
+    elseif key == 'left' then
+        newEmptyX = emptyX - 1
+    elseif key == 'down' then
+        newEmptyY = emptyY + 1
+    end
+
+    if grid[newEmptyX] and grid[newEmptyX][newEmptyY] then
+        grid[newEmptyX][newEmptyY], grid[emptyX][emptyY] = 
+            grid[emptyX][emptyY], grid[newEmptyX][newEmptyY]
+    end
+end
+
 function setup()
     love.graphics.setNewFont(36)
 end
