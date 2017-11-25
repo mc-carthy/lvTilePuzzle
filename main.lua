@@ -48,6 +48,17 @@ function shuffleTiles(numShuffles)
             moveDirection('down')
         end
     end
+    makeBottomRightTileEmpty()
+end
+
+function makeBottomRightTileEmpty()
+    for moveNumber = 1, gridSizeX - 1 do
+        moveDirection('left')
+    end
+
+    for moveNumber = 1, gridSizeY - 1 do
+        moveDirection('up')
+    end
 end
 
 function moveDirection(direction)
@@ -67,13 +78,13 @@ function moveDirection(direction)
     local newEmptyY = emptyY
 
     if direction == 'right' then
-        newEmptyX = emptyX + 1
-    elseif direction == 'up' then
-        newEmptyY = emptyY - 1
-    elseif direction == 'left' then
         newEmptyX = emptyX - 1
-    elseif direction == 'down' then
+    elseif direction == 'up' then
         newEmptyY = emptyY + 1
+    elseif direction == 'left' then
+        newEmptyX = emptyX + 1
+    elseif direction == 'down' then
+        newEmptyY = emptyY - 1
     end
 
     if grid[newEmptyX] and grid[newEmptyX][newEmptyY] then
