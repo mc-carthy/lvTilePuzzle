@@ -1,5 +1,5 @@
-gridSizeX = 4
-gridSizeY = 4
+gridSizeX = 2
+gridSizeY = 2
 cellSize = 100
 numShuffles = 1000
 
@@ -19,6 +19,7 @@ end
 
 function love.keypressed(key)
     moveDirection(key)
+    checkIfComplete()
 end
 
 function setup()
@@ -30,7 +31,7 @@ function createGrid()
     for x = 1, gridSizeX do
         grid[x] = {}
         for y = 1, gridSizeY do
-            grid[x][y] = x + ((y - 1) * gridSizeX)
+            grid[x][y] = getInitialValue(x, y)
         end
     end
 end
@@ -93,6 +94,22 @@ function moveDirection(direction)
     end
 end
 
+function checkIfComplete()
+    local complete = true
+
+    for x = 1, gridSizeX do
+        for y = 1, gridSizeY do
+            if grid[x][y] ~= getInitialValue(x, y) then
+                complete = false
+            end
+        end
+    end
+
+    if complete then
+        love.load()
+    end
+end
+
 function drawTiles()
     for x = 1, gridSizeX do
         for y = 1, gridSizeY do
@@ -114,4 +131,8 @@ function drawTiles()
             end
         end
     end
+end
+
+function getInitialValue(x, y)
+    return x + ((y - 1) * gridSizeX)
 end
