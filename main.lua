@@ -19,7 +19,9 @@ end
 
 function love.keypressed(key)
     moveDirection(key)
-    checkIfComplete()
+    if isComplete() then
+        love.load()
+    end
 end
 
 function setup()
@@ -37,18 +39,20 @@ function createGrid()
 end
 
 function shuffleTiles(numShuffles)
-    for moveNumber=1, numShuffles do
-        local roll = love.math.random(4)
-        if roll == 1 then
-            moveDirection('right')
-        elseif roll == 2 then
-            moveDirection('up')
-        elseif roll == 3 then
-            moveDirection('left')
-        elseif roll == 4 then
-            moveDirection('down')
+    repeat
+        for moveNumber=1, numShuffles do
+            local roll = love.math.random(4)
+            if roll == 1 then
+                moveDirection('right')
+            elseif roll == 2 then
+                moveDirection('up')
+            elseif roll == 3 then
+                moveDirection('left')
+            elseif roll == 4 then
+                moveDirection('down')
+            end
         end
-    end
+    until not isComplete()
     makeBottomRightTileEmpty()
 end
 
@@ -94,20 +98,16 @@ function moveDirection(direction)
     end
 end
 
-function checkIfComplete()
-    local complete = true
-
+function isComplete()
     for x = 1, gridSizeX do
         for y = 1, gridSizeY do
             if grid[x][y] ~= getInitialValue(x, y) then
-                complete = false
+                return false
             end
         end
     end
 
-    if complete then
-        love.load()
-    end
+    return true
 end
 
 function drawTiles()
